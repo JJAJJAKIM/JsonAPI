@@ -34,6 +34,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseDTO login(@RequestParam Map<String, String> loginDTO) {
+        log.info("login : {}", loginDTO);
         ResponseDTO responseDTO = new ResponseDTO();
         responseDTO.setStatus(false);
         UserDTO userDTO =  authMapper.login2(loginDTO);
@@ -51,4 +52,6 @@ public class AuthController {
         return responseDTO;
 
     }
+
+
 }

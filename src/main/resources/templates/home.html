@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>HOME</title>
+</head>
+<body>
+    <h1 sec:authentication="name"> 이름 </h1>
+    <h2 sec:authentication="principal.authorities"> 권한 : </h2>
+    <h2 sec:authentication="principal"> 권한 : </h2>
+<a href="/logout">로그아웃</a>
+</body>
+</html>
