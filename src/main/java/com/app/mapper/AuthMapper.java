@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Mapper
 public interface AuthMapper {
@@ -27,4 +28,8 @@ public interface AuthMapper {
             "on ur.roleNo = r.roleNo " +
             "and ur.userNo = #{userNo}")
     public List<RoleDTO> findByRoles(UserDTO userDTO);
+
+    @Select("select userNo, userNm, userPwd, userEnable from user " +
+            "where userNm = #{userNm}")
+    public Optional<UserDTO> findbyUserNm(String userNm);
 }

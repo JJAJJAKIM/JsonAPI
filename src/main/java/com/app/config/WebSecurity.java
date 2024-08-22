@@ -46,7 +46,7 @@ public class WebSecurity {
                 /* 로그인 기능 동작시 성공 또는 실패 이후 이동할 페이지를 Handler를 사용하여 지정한다. */
                         .successHandler((req, resp, auth) -> {
                             log.info("User logged in: {}", auth.getPrincipal());
-                            resp.sendRedirect("/test");
+                            resp.sendRedirect("/");
                         })
                         .failureHandler((request, response, exception) ->
                                 exception.printStackTrace()
@@ -59,21 +59,22 @@ public class WebSecurity {
 
         return http.build();
     }
-
-    @Bean
-    public UserDetailsService users() {
-        UserDetails user = User.builder()
-                .username("user")
-                .password(passwordEncoder().encode("1234"))
-                .roles("DEV")
-                .build();
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(passwordEncoder().encode("1234"))
-                .roles("USER", "ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(user, admin);
-    }
+//
+//    @Bean
+//    public UserDetailsService users() {
+//        log.info("Users pwd : {}", passwordEncoder().encode("1234") );
+//        UserDetails user = User.builder()
+//                .username("user")
+//                .password(passwordEncoder().encode("1234"))
+//                .roles("DEV")
+//                .build();
+//        UserDetails admin = User.builder()
+//                .username("admin")
+//                .password(passwordEncoder().encode("1234"))
+//                .roles("USER", "ADMIN")
+//                .build();
+//        return new InMemoryUserDetailsManager(user, admin);
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

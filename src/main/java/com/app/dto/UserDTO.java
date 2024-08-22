@@ -11,4 +11,6 @@ public class UserDTO {
 
     int userNo;
     String userNm;
+    String userPwd;
+    boolean userEnable;
 }
