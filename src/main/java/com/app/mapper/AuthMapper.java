@@ -3,8 +3,11 @@ package com.app.mapper;
 import com.app.dto.LoginDTO;
 import com.app.dto.RoleDTO;
 import com.app.dto.UserDTO;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.mapping.StatementType;
 
 import java.util.List;
 import java.util.Map;
@@ -32,4 +35,8 @@ public interface AuthMapper {
     @Select("select userNo, userNm, userPwd, userEnable from user " +
             "where userNm = #{userNm}")
     public Optional<UserDTO> findbyUserNm(String userNm);
+
+    @SelectKey(statementType = StatementType.PREPARED, statement = "select last_insert_id() as no", keyProperty = "no", before = false, resultType = int.class)
+    @Insert("insert into user (userNm, userPwd) values ( #{userNm}, #{userPwd})")
+    public int saveUser(Map<String, String> paramMap);
 }

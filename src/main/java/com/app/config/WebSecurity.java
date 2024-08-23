@@ -23,8 +23,10 @@ public class WebSecurity {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable());
+
         http.authorizeHttpRequests(req -> {
-           req.requestMatchers("/").permitAll();
+           req.requestMatchers("/", "/sign").permitAll();
            req.requestMatchers("/admin").hasRole("ADMIN");
            req.anyRequest().authenticated();
         });
