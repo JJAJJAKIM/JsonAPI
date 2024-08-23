@@ -3,7 +3,9 @@ package com.app.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,12 +24,17 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurity {
 
     @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class).build();
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable());
 
         http.authorizeHttpRequests(req -> {
-           req.requestMatchers("/", "/sign").permitAll();
-           req.requestMatchers("/admin").hasRole("ADMIN");
+           req.requestMatchers("/", "/sign","/admin").permitAll();
+//           req.requestMatchers("/admin").hasRole("ADMIN");
            req.anyRequest().authenticated();
         });
 

@@ -38,8 +38,8 @@ public interface AuthMapper {
 
     @SelectKey(statementType = StatementType.PREPARED, statement = "select last_insert_id() as userNo", keyProperty = "userNo", before = false, resultType = int.class)
     @Insert("insert into user (userNm, userPwd) values ( #{userNm}, #{userPwd})")
-    public int saveUser(Map<String, String> paramMap);
+    public int saveUser(UserDTO userDTO);
 
-    @Insert("insert into user_role values (#{userNo}, 2 ")
-    public int saveRole(Map<String, String> paramMap);
+    @Insert("insert into user_role values (#{userNo}, 2 )")
+    public int saveRole(UserDTO userDTO);
 }

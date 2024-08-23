@@ -9,6 +9,7 @@ import javax.crypto.SecretKey;
 
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.io.Decoders;
@@ -28,11 +29,11 @@ public class Token {
 	@Value("${access.auth.interval}")
 	private int interval;
 	
-	public String setToken() {
+	public String setToken(Authentication auth) {
 		
 		JwtBuilder token = Jwts.builder()
 				.header().add(getHeader()).and()
-				.claims(setClaims())
+				.claims(setClaims(auth))
 				.expiration(getDate())
 				.issuedAt(Calendar.getInstance().getTime())
 			.signWith(getKey(), ALGORITHM);
@@ -61,12 +62,12 @@ public class Token {
 	 * iat : 토큰 발급 시간	(issuedAt)
 	 * nbf : 토큰 활성 날짜	(not before)
 	 ********************************************************************/
-	private Map<String, ?> setClaims() {
+	private Map<String, ?> setClaims(Authentication auth) {
 		Map<String, Object> claims = new HashMap<>();
 
 		Map<String, Object> user = new HashMap<>();
-		user.put("userNm", "사용자");
-		
+		user.put("userNm", auth.getName());
+		user.put("roles", auth.getAuthorities());
 		claims.put("issuer", "JsonAPI");
 		claims.put("subject", "User");
 		claims.put("audience", user);
