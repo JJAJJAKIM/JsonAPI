@@ -63,7 +63,10 @@ public class ViewController {
 
             if (state == 1){
                log.info ("User : {}", paramMap);
-                return "redirect:/login";
+               state = authMapper.saveRole(paramMap);
+                if(state == 1) {
+                    return "redirect:/login";
+                }
             }
         }
         return "redirect:/sign";

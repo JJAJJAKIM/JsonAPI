@@ -36,7 +36,10 @@ public interface AuthMapper {
             "where userNm = #{userNm}")
     public Optional<UserDTO> findbyUserNm(String userNm);
 
-    @SelectKey(statementType = StatementType.PREPARED, statement = "select last_insert_id() as no", keyProperty = "no", before = false, resultType = int.class)
+    @SelectKey(statementType = StatementType.PREPARED, statement = "select last_insert_id() as userNo", keyProperty = "userNo", before = false, resultType = int.class)
     @Insert("insert into user (userNm, userPwd) values ( #{userNm}, #{userPwd})")
     public int saveUser(Map<String, String> paramMap);
+
+    @Insert("insert into user_role values (#{userNo}, 2 ")
+    public int saveRole(Map<String, String> paramMap);
 }
