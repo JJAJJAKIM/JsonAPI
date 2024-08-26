@@ -18,9 +18,9 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Slf4j
-@EnableMethodSecurity
+//@EnableMethodSecurity
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 public class WebSecurity {
 
     @Bean
@@ -31,11 +31,14 @@ public class WebSecurity {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable());
+        http.cors(cors -> cors.disable());
 
         http.authorizeHttpRequests(req -> {
-           req.requestMatchers("/", "/sign","/admin").permitAll();
+           req.requestMatchers("/**").permitAll();
+//           req.requestMatchers("/","/token","/admin","/sign").permitAll();
 //           req.requestMatchers("/admin").hasRole("ADMIN");
-           req.anyRequest().authenticated();
+//            req.requestMatchers("/token").hasRole("USER");
+//           req.anyRequest().authenticated();
         });
 
         http.formLogin(
@@ -47,20 +50,20 @@ public class WebSecurity {
                 /* ----------------------------------------------------------------------- */
 
                 /* 로그인 기능 동작시 성공 또는 실패 이후 이동할 페이지 지정.(Handler보다 우선순위가 낮아서 같이 사용한다면 handler 설정으로 동작한다 */
-                        .defaultSuccessUrl("/", false)
+                        .defaultSuccessUrl("/",false)
                         // false : 접속했던 페이지로 돌아간다. true : 무조건 기본 설정 페이지로 간다.
-                        .failureUrl("/login?error")
+//                        .failureUrl("/login?error")
                 /**********************************************************************************************************/
 
                 /* 로그인 기능 동작시 성공 또는 실패 이후 이동할 페이지를 Handler를 사용하여 지정한다. */
-                        .successHandler((req, resp, auth) -> {
-                            log.info("User logged in: {}", auth.getPrincipal());
-                            resp.sendRedirect("/");
-                        })
-                        .failureHandler((request, response, exception) ->
-                                exception.printStackTrace()
-                                )
-                        .permitAll()
+//                        .successHandler((req, resp, auth) -> {
+//                            log.info("User logged in: {}", auth.getPrincipal());
+//                            resp.sendRedirect("/");
+//                        })
+//                        .failureHandler((request, response, exception) ->
+//                                exception.printStackTrace()
+//                                )
+//                        .permitAll()
                 /**********************************************************************************************************/
 //                   .failureUrl("/fail")
 

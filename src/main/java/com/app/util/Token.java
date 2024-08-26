@@ -16,6 +16,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.MacAlgorithm;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @Slf4j
 @Component
@@ -66,8 +67,9 @@ public class Token {
 		Map<String, Object> claims = new HashMap<>();
 
 		Map<String, Object> user = new HashMap<>();
-		user.put("userNm", auth.getName());
-		user.put("roles", auth.getAuthorities());
+		user.put("userNm", "TEST");
+//		user.put("userNm", auth.getName());
+//		user.put("roles", auth.getAuthorities());
 		claims.put("issuer", "JsonAPI");
 		claims.put("subject", "User");
 		claims.put("audience", user);
@@ -99,7 +101,7 @@ public class Token {
 				Claims claims = getToken(token);
 				log.info("============================================");
 				log.info("|ExpireTime\t: {}|", claims.getExpiration());
-				log.info("|IIssuedTime: {}|", claims.getIssuedAt());
+				log.info("|IssuedTime: {}|", claims.getIssuedAt());
 				log.info("|RealTime\t: {}|", Calendar.getInstance().getTime());
 				log.info("============================================");
 				return true;
