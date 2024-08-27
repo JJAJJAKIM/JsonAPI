@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.crypto.SecretKey;
 
+import com.app.dto.UserDTO;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -29,7 +30,20 @@ public class Token {
 
 	@Value("${access.auth.interval}")
 	private int interval;
-	
+
+
+	public String setToken(UserDTO userDTO) {
+
+		JwtBuilder token = Jwts.builder()
+				.header().add(getHeader()).and()
+				.claims(setClaims(userDTO))
+				.expiration(getDate())
+				.issuedAt(Calendar.getInstance().getTime())
+				.signWith(getKey(), ALGORITHM);
+
+		return token.compact();
+	}
+
 	public String setToken(Authentication auth) {
 		
 		JwtBuilder token = Jwts.builder()
@@ -63,6 +77,24 @@ public class Token {
 	 * iat : 토큰 발급 시간	(issuedAt)
 	 * nbf : 토큰 활성 날짜	(not before)
 	 ********************************************************************/
+
+	private Map<String, ?> setClaims(UserDTO userDTO) {
+		Map<String, Object> claims = new HashMap<>();
+
+		Map<String, Object> user = new HashMap<>();
+//		user.put("userNm", auth.getName());
+//		user.put("roles", auth.getAuthorities());
+		claims.put("issuer", "JsonAPI");
+		claims.put("subject", "User");
+		claims.put("audience", userDTO);
+//		claims.put("expiration", getDate());
+//		claims.put("issuedAt", Calendar.getInstance().getTime());
+
+		return claims;
+	}
+
+
+
 	private Map<String, ?> setClaims(Authentication auth) {
 		Map<String, Object> claims = new HashMap<>();
 
@@ -78,6 +110,7 @@ public class Token {
 				
 		return claims;
 	}
+
 	
 	private Date getDate() {
 		Calendar date = Calendar.getInstance();

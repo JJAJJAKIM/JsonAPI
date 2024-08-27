@@ -25,10 +25,10 @@ $(document).ready(()=> {
     const EVENT2 = (token) => {
         $.ajax({
             method: "POST",
-            url: "http://localhost:80/token",
-            data: {"token": token},
+            url: "http://localhost:80/getUser",
+            // data: {"token": token},
             beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization", "Token");
+                xhr.setRequestHeader("Authorization", token);
             },
             success: function (res) {
                 console.log(res);
@@ -51,5 +51,36 @@ $(document).ready(()=> {
        // alert("토큰 있당~");
 
     });
+
+    $("form").on("submit", e => {
+        //form 태그가 가지고 있는 이벤트를 막는 부분
+        e.preventDefault();
+        let params = {
+            "userNm": $("#userNm").val(),
+            "userPwd" : $("#userPwd").val()
+        }
+        if(params == null){
+            alert("값을 입력해라 ~");
+            return;
+        }
+        // "/jsLogin"
+        $.ajax({
+            method: "POST",
+            url: "http://localhost:80/jsLogin",
+            data: params,
+            beforeSend : function(xhr){
+                // xhr.setRequestHeader("Authorization", token);
+            },
+            success: function(res) {
+                console.log(res);
+                localStorage.setItem("token", res.token);
+            },
+            error: function(res) {
+                console.log(res);
+            }
+        });
+        console.log("form", params);
+    });
+
     localStorage.removeItem("token");
 });

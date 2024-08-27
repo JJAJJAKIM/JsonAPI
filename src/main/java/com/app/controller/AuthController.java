@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500", "http://192.168.0.5:5500"})
+@CrossOrigin(origins = {"http://127.0.0.1:5500", "http://localhost:5500"})
 @RestController
 public class AuthController {
 
@@ -33,11 +33,11 @@ public class AuthController {
 //    }
 
     @PostMapping("/login")
-    public ResponseDTO login(@RequestParam Map<String, String> loginDTO) {
-        log.info("login : {}", loginDTO);
+    public ResponseDTO login(@RequestParam Map<String, String> params) {
+        log.info("login : {}", params);
         ResponseDTO responseDTO = new ResponseDTO();
         responseDTO.setStatus(false);
-        UserDTO userDTO =  authMapper.login2(loginDTO);
+        UserDTO userDTO =  authMapper.login2(params);
         log.info("Login User : {}", userDTO);
 
         // 입력한 사용자 정보가 없을 경우 에러 리턴
@@ -50,7 +50,6 @@ public class AuthController {
         responseDTO.setUser(userDTO);
         responseDTO.setRoles(roles);
         return responseDTO;
-
     }
 
 
