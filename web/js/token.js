@@ -38,6 +38,22 @@ $(document).ready(()=> {
             }
         });
     }
+    const EVENT3 = (token) => {
+        $.ajax({
+            method: "GET",
+            url: "http://localhost:80/admin",
+            // data: {"token": token},
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", token);
+            },
+            success: function (res) {
+                console.log(res);
+            },
+            error: function (res) {
+                console.log(res);
+            }
+        });
+    }
     $("#btn1").on("click", () => {
        EVENT1();
     });
@@ -49,6 +65,17 @@ $(document).ready(()=> {
        }
        EVENT2(token);
        // alert("토큰 있당~");
+
+    });
+
+    $("#btn3").on("click", ()=> {
+        let token = localStorage.getItem("token");
+        if (token == null){
+            alert("토큰 없당~");
+            return;
+        }
+        EVENT3(token);
+        // alert("토큰 있당~");
 
     });
 
