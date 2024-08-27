@@ -39,7 +39,7 @@ public class ViewController {
     @ResponseBody
     @GetMapping("/admin")
     public String admin(Authentication auth) {
-        return auth.getName();
+        return auth.getName()+" "+auth.getAuthorities().toString();
     }
     @GetMapping("/login")
     public String login() {
